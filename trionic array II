@@ -1,0 +1,52 @@
+class Solution:
+    def maxSumTrionic(self, nums: List[int]) -> int:
+        n = len(nums)
+        ans = -10**18
+        start = 0
+
+        while start < n:
+            x = start + 1
+            total = 0
+
+            while x < n and nums[x - 1] < nums[x]:
+                x += 1
+            peak = x - 1
+
+            if peak == start:
+                start += 1
+                continue
+
+            total += nums[peak] + nums[peak - 1]
+            while x < n and nums[x - 1] > nums[x]:
+                total += nums[x]
+                x += 1
+            valley = x - 1
+
+            if valley == peak or valley == n - 1 or (x < n and nums[x] <= nums[valley]):
+                start = valley
+                continue
+
+            total += nums[valley + 1]
+
+            best_right = 0
+            run = 0
+            t = valley + 2
+            while t < n and nums[t] > nums[t - 1]:
+                run += nums[t]
+                best_right = max(best_right, run)
+                t += 1
+            total += best_right
+
+            best_left = 0
+            run = 0
+            t = peak - 2
+            while t >= start:
+                run += nums[t]
+                best_left = max(best_left, run)
+                t -= 1
+            total += best_left
+
+            ans = max(ans, total)
+            start = valley
+
+        return ans
