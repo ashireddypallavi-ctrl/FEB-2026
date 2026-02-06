@@ -1,0 +1,15 @@
+from bisect import bisect_right
+from typing import List
+
+class Solution:
+    def minRemoval(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        n = len(nums)
+        max_keep = 0
+
+        for i, val in enumerate(nums):
+            # Find rightmost index j where nums[j] <= k * val
+            j = bisect_right(nums, val * k)
+            max_keep = max(max_keep, j - i)
+
+        return n - max_keep
