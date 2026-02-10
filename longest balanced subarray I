@@ -1,0 +1,18 @@
+from typing import List
+
+class Solution:
+    def longestBalanced(self, nums: List[int]) -> int:
+        n = len(nums)
+        ans = 0
+        for i in range(n):
+            distinct_even = set()
+            distinct_odd = set()
+            for j in range(i, n):
+                if nums[j] % 2 == 0:
+                    distinct_even.add(nums[j])
+                else:
+                    distinct_odd.add(nums[j])
+                
+                if len(distinct_even) == len(distinct_odd):
+                    ans = max(ans, j - i + 1)
+        return ans
